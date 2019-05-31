@@ -13,6 +13,9 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    MessagesRepository messagesRepository;
+
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
         model.addAttribute("user", new User());
@@ -33,7 +36,8 @@ public class HomeController {
     }
 
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("messages", messagesRepository.findAll());
         return "index";
     }
 
@@ -46,7 +50,21 @@ public class HomeController {
     public String secure(Model model) {
         // Gets the currently logged in user and maps it to "user" in the Thymeleaf template
         model.addAttribute("user", userService.getCurrentUser());
+        model.addAttribute("messages", messagesRepository.findAll());
         return "secure";
+    }
+    @GetMapping("/add")
+    public String messageform(Model model){
+        model.addAttribute("message", new Message());
+        return"messageform";
+    }
+    @PostMapping("/processform")
+    public String processmessageform(@Valid Message message, BindingResult result){
+        if(result.hasErrors()){
+            return "messageform";
+        }
+        messagesRepository.save(message);
+        return "redirect:/";
     }
 
 }
