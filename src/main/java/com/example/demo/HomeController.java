@@ -2,14 +2,21 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class HomeController {
+    @Autowired
+    CloudinaryConfig cloudc;
+
     @Autowired
     UserService userService;
 
@@ -77,10 +84,22 @@ public class HomeController {
         return"messageform";
     }
     @PostMapping("/processform")
-    public String processmessageform(@Valid Message message, BindingResult result){
+    public String processmessageform( @ModelAttribute Message message,@Valid @RequestParam("file")MultipartFile file, BindingResult result){
         if(result.hasErrors()){
             return "messageform";
         }
+        //If it breaks delete this
+
+        try{
+            Map uploadResult = cloudc.upload(file.getBytes(),
+                    ObjectUtils.asMap("resourcetype", "auto"));
+            message.setPic(uploadResult.get("url").toString());
+            messagesRepository.save(message);
+        }catch(IOException e){
+            e.printStackTrace();
+            return "redirect:/add";
+        }
+        //only whats before this line goes
         message.setUser(userService.getUser());
         messagesRepository.save(message);
         return "redirect:/";
