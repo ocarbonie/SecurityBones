@@ -11,7 +11,7 @@ import javax.validation.Valid;
 @Controller
 public class HomeController {
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
     MessagesRepository messagesRepository;
@@ -41,12 +41,14 @@ public class HomeController {
     @RequestMapping("/")
     public String index(Model model) {
         model.addAttribute("messages", messagesRepository.findAll());
+        if(userService.getCurrentUser() != null) {
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
         return "index";
     }
 
     @RequestMapping("/login")
-    public String login() {
-
+    public String login(Model model) {
         return "login";
     }
     @PostMapping("/login")
@@ -55,15 +57,19 @@ public class HomeController {
             return "login";
         }
 
-        return "redirect:/secure";
+        return "redirect:/";
     }
 
     @RequestMapping("/secure")
     public String secure(Model model) {
         // Gets the currently logged in user and maps it to "user" in the Thymeleaf template
-        model.addAttribute("user", userService.getCurrentUser());
+        model.addAttribute("user", userService.getUser());
         model.addAttribute("messages", messagesRepository.findAll());
-        return "secure";
+
+        if(userService.getCurrentUser() != null) {
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
+        return "index";
     }
     @GetMapping("/add")
     public String messageform(Model model){
@@ -75,19 +81,23 @@ public class HomeController {
         if(result.hasErrors()){
             return "messageform";
         }
+        message.setUser(userService.getUser());
         messagesRepository.save(message);
         return "redirect:/";
     }
     @RequestMapping("/view/{id}")
     public String showCourse(@PathVariable("id") long id, Model model){
         model.addAttribute("message", messagesRepository.findById(id).get());
+        if(userService.getCurrentUser() != null) {
+            model.addAttribute("user_id", userService.getUser().getId());
+        }
         return "show";
     }
 
     @RequestMapping("/update/{id}")
     public String updateCourse(@PathVariable("id") long id, Model model){
         model.addAttribute("message", messagesRepository.findById(id).get());
-        return "courseform";
+        return "messageform";
     }
 
     @RequestMapping("/delete/{id}")

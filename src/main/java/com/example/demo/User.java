@@ -37,10 +37,10 @@ public class User {
     private Collection<Role> roles;
 
 //    //This is not working. It still says that the user id is null instead of referencing the user ID
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "message_id"))
-      private Collection<Message> messages;
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "message_id"))
+//      private Collection<Message> messages;
 
 
     public User() {
@@ -119,11 +119,11 @@ public class User {
         this.roles = roles;
     }
 
-    public Collection<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(Collection<Message> messages) {
-        this.messages = messages;
-    }
+//    public Collection<Message> getMessages() {
+//        return messages;
+//    }
+//
+//    public void setMessages(Collection<Message> messages) {
+//        this.messages = messages;
+//    }
 }

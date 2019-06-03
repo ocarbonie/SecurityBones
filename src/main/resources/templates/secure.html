@@ -39,14 +39,16 @@
                     <a th:href="@{/update/{id} (id=${message.id})}" class="text-white">Update</a>
                     <a th:href="@{/delete/{id} (id=${message.id})}" class="text-white">Delete</a>
                 </span>
-
+                    </td>
                 </div>
                 <div class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                    <td>
                     <a th:href="@{/update/{id} (id=${message.id})}"
                        class="text-white">Update</a>
                     <a th:href="@{/view/{id} (id=${message.id})}" class="text-white">View</a>
                     <a th:href="@{/delete/{id} (id=${message.id})}"
                        class="text-white">Delete</a>
+                    </td>
                 </div>
 
 
