@@ -3,6 +3,7 @@ package com.example.demo;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Collection;
 
 @Entity
 public class Message {
@@ -28,9 +29,22 @@ public class Message {
 
     private String pic;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+//    public String getMessage() {
+//        return message;
+//    }
+//
+//    public void setMessage(String message) {
+//        this.message = message;
+//    }
+
+//    @Column(unique=true)
+//    private String message;
+
+    //This is not working. It still says that the user id is null instead of referencing the user ID
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
 
     public long getId() {
         return id;

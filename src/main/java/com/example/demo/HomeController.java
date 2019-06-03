@@ -16,6 +16,9 @@ public class HomeController {
     @Autowired
     MessagesRepository messagesRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
         model.addAttribute("user", new User());
@@ -32,7 +35,7 @@ public class HomeController {
             userService.saveUser(user);
             model.addAttribute("message", "User Account Successfully Created");
         }
-        return "index";
+        return "redirect:/";
     }
 
     @RequestMapping("/")
@@ -43,7 +46,16 @@ public class HomeController {
 
     @RequestMapping("/login")
     public String login() {
+
         return "login";
+    }
+    @PostMapping("/login")
+    public String processlogin( BindingResult result){
+        if(result.hasErrors()){
+            return "login";
+        }
+
+        return "redirect:/secure";
     }
 
     @RequestMapping("/secure")
@@ -64,6 +76,23 @@ public class HomeController {
             return "messageform";
         }
         messagesRepository.save(message);
+        return "redirect:/";
+    }
+    @RequestMapping("/view/{id}")
+    public String showCourse(@PathVariable("id") long id, Model model){
+        model.addAttribute("message", messagesRepository.findById(id).get());
+        return "show";
+    }
+
+    @RequestMapping("/update/{id}")
+    public String updateCourse(@PathVariable("id") long id, Model model){
+        model.addAttribute("message", messagesRepository.findById(id).get());
+        return "courseform";
+    }
+
+    @RequestMapping("/delete/{id}")
+    public String delCourse(@PathVariable("id") long id){
+        messagesRepository.deleteById(id);
         return "redirect:/";
     }
 
