@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(
                         new AntPathRequestMatcher("/logout"))
                 // The user is redirected to the login page after logout
-                .logoutSuccessUrl("/").permitAll().permitAll()
+                .logoutSuccessUrl("/login").permitAll().permitAll()
                 .and()
                 .httpBasic();
         http
