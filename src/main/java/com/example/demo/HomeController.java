@@ -29,7 +29,7 @@ public class HomeController {
     @GetMapping("/register")
     public String showRegistrationPage(Model model) {
         model.addAttribute("user", new User());
-        return "/registration";
+        return "registration";
     }
 
     @PostMapping("/register")
