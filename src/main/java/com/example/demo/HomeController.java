@@ -89,20 +89,27 @@ public class HomeController {
             return "messageform";
         }
         //If it breaks delete this
-
-        try{
-            Map uploadResult = cloudc.upload(file.getBytes(),
-                    ObjectUtils.asMap("resourcetype", "auto"));
-            message.setPic(uploadResult.get("url").toString());
+        if (file.isEmpty()){
+            message.setUser(userService.getUser());
             messagesRepository.save(message);
-        }catch(IOException e){
-            e.printStackTrace();
-            return "redirect:/add";
+            return "redirect:/";
         }
-        //only whats before this line goes
-        message.setUser(userService.getUser());
-        messagesRepository.save(message);
-        return "redirect:/";
+        else {
+
+            try {
+                Map uploadResult = cloudc.upload(file.getBytes(),
+                        ObjectUtils.asMap("resourcetype", "auto"));
+                message.setPic(uploadResult.get("url").toString());
+                messagesRepository.save(message);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "redirect:/add";
+            }
+            //only whats before this line goes
+            message.setUser(userService.getUser());
+            messagesRepository.save(message);
+            return "redirect:/";
+        }
     }
     @RequestMapping("/view/{id}")
     public String showCourse(@PathVariable("id") long id, Model model){

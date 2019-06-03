@@ -10,13 +10,16 @@
     <title>Message</title>
 </head>
 <body>
-<a class="btn btn-primary" href="/" role="button">Show All Messages</a>
-<a class="btn btn-primary" href="/add" role="button">Add a message</a>
+<div th:replace="base :: navlinks"></div>
+<!--<a class="btn btn-primary" href="/" role="button">Show All Messages</a>-->
+<!--<a class="btn btn-primary" href="/add" role="button">Add a message</a>-->
 
 
-<div class="container bg-secondary">
+<div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 p-3 mb-2 bg-info text-white">
+            <br>
+            <br>
 
 <h2 class="text-left">Message</h2>
 <table class="table table-borderless">

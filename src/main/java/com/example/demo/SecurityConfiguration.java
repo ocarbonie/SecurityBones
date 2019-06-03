@@ -53,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests()
-                .antMatchers("/css/**","/", "/h2/**", "/register").permitAll()
+                .antMatchers("/css/**","/", "/h2/**", "/register", "/view/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll() // Must be on it's own line
@@ -64,7 +64,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(
                         new AntPathRequestMatcher("/logout"))
                 // The user is redirected to the login page after logout
-                .logoutSuccessUrl("/login").permitAll().permitAll()
+                .logoutSuccessUrl("/").permitAll().permitAll()
                 .and()
                 .httpBasic();
         http
